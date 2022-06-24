@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html>
+<html>
+  <!-- START OF HEAD SECTION -->
+  <head>
+    <meta charset="utf-8" />
+    <title>Menu App</title>
+    <!-- START OF STYLE SECTION -->
+    <style>
+      h1 {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: indigo;
+      }
+      div#controlsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        width: 450px;
+        justify-content: center;
+      }
+      button.controlButton {
+        margin-left: 25px;
+        margin-right: 25px;
+        border-radius: 8px;
+        width: 155px;
+        height: 30px;
+      }
+
+      button.addButton {
+        background-color: rgb(172, 219, 172);
+      }
+
+      button.removeButton {
+        background-color: rgb(236, 167, 167);
+      }
+      div#menuCreationInputContainer {
+        margin-top: 20px;
+        background-color: rgb(172, 219, 172)
+      }
+      div#menuSelectionListContainer {
+        margin-top: 20px;
+        background-color: rgb(236, 167, 167);
+      }
+      ul {
+        border-style: solid;
+        border-width: 1px;
+        border-color: darkslateblue;
+        font-family: helvetica;
+        width: 30%;
+        border-radius: 25px;
+      }
+
+      li {
+        text-shadow: 0px 4px 7px black;
+        font-family: times;
+      }
+
+      li::marker {
+        color: rgb(119, 0, 255);
+      }
+
+      #blueThing {
+        color: blue;
+      }
+
+      .redThings {
+        color: red;
+      }
+    </style>
+    <!-- END OF STYLE SECTION -->
+
+    <!-- START OF JAVASCRIPT SECTION -->
+    <script type="text/javascript">
+      const Print = console.log;
+
+      function main() {
+        mainMenuCont = document.querySelector("#mainMenuContainer");
+        addMenuButton = document.querySelector("button#addMenuListGroup");
+        removeMenuButton = document.querySelector("button#removeMenuListGroup");
+
+        addMenuListGroup.addEventListener("click", () => {
+          var inputBoxValue = document.querySelector("input#createInputName").value;
+          if (inputBoxValue.length > 0) {
+
+            if( Boolean(document.getElementById(inputBoxValue)) === false ) {
+              var listSegment = document.createElement(`div`);
+                listSegment.id = inputBoxValue;
+                listSegment.classList.add("menuContainer");
+
+          listSegment.innerHTML = `
+            <p>List ${inputBoxValue}:</p>
+            <ul class="menuThingList">
+              <li>A</li>
+              <li>B</li>
+              <li>Food</li>
+            </ul>
+          `;
+          document.querySelector("#mainMenuContainer").appendChild(listSegment);
+
+          // We just added the menu list now, let's keep it in another list
+          // so we can remove it if we want.
+          var menuSelectionList = document.querySelector("select#menuSelectionList");
+          var selectListOption = document.createElement("option");
+          selectListOption.value = inputBoxValue;
+          selectListOption.innerText = inputBoxValue;
+          menuSelectionList.appendChild(selectListOption);
+          } else {
+          alert("This item seems to already exist on the page, please type a new name and try again.")
+        }
+
+        }
+
+        });
+
+        removeMenuButton.addEventListener("click", () => {
+          var selectionList = document.querySelector("select#menuSelectionList");
+          var selectionOption = selectionList.options[selectionList.selectedIndex].value;
+          var listSegmentToRemove = document.querySelector(`div#${selectionOption}`);
+
+          listSegmentToRemove.remove();
+        })
+
+      }
+
+      function docReady() {
+        // see if Page (DOM) is already available
+        if (
+          document.readyState === "complete" ||
+          document.readyState === "interactive"
+        ) {
+          // call on next available tick
+          main();
+        } else {
+          document.addEventListener("DOMContentLoaded", (event) => {
+            main();
+          });
+        }
+      }
+      docReady();
+    </script>
+    <!-- END OF JAVASCRIPT SECTION -->
+  </head>
+  <!-- END OF HEAD SECTION -->
+  <!-- START OF BODY SECTION -->
+  <body>
+    <h1>Add and Remove Menus!</h1>
+    <div id="controlsContainer">
+      <button id="addMenuListGroup" class="controlButton addButton">
+        ADD MENU LIST
+      </button>
+
+      <button id="removeMenuListGroup" class="controlButton removeButton">
+        REMOVE MENU LIST
+      </button>
+      <div id="menuCreationInputContainer">
+        <label for="createInputName">Type a menu list name: </label>
+        <input id="createInputName"></input>
+      </div>
+      <div id="menuSelectionListContainer">
+        <label for="menuSelectionList">Choose a menu to remove:</label>
+        <select name="menuSelectionList" id="menuSelectionList">
+          <option value="">--Please choose a menu--</option>
+        </select>
+      </div>
+    </div>
+    <div id="mainMenuContainer">
+      <!-- This is an HTML comment, nothing in this comment is displayed -->
+    </div>
+  </body>
+  <!-- END OF BODY SECTION -->
+</html>
